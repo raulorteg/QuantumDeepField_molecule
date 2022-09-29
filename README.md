@@ -1,3 +1,41 @@
+Note: This is a fork of the original implementation (https://github.com/masashitsubaki/molecularGNN_smiles)
+
+# Installation 
+1. Clone the repository: ```git clone https://github.com/raulorteg/QuantumDeepField_molecule```
+2. Create the python virtual environment (I use python 3.9.14): ```virtualenv --py=python3.9 qdf```
+3. Activate virtualenv  ```source qdf/bin/activate```
+4. Install requirements ```python -m pip install -r requirements.txt``` Note: Your system might need a different torch installation (https://pytorch.org/get-started/locally/)
+
+# Usage
+
+In `/scripts` you may find some scripts prepared to run the default values with the only input being the dataset to be used, through the argument --dataset.
+
+*NOTE:* Configure the paths to the datasets by editting the file in qdf/settings.py:
+```python
+DATASET_PATH = "/home/raul/git/QuantumDeepField_molecule/dataset"
+SAVE_PATH = "/home/raul/git/QuantumDeepField_molecule/output"
+```
+
+### Preprocessing (for training):
+
+```shell
+ python preprocess_train.py --dataset=$dataset_trained
+ ```
+ _e.g `python preprocess_train.py --dataset=QM9under7atoms_atomizationenergy_eV`_
+
+ _Options:_
+ * `dataset`: [string] dataset to be used in pre-training. From those that can be installed directly from the cloned repository the options are:
+    * "QM9under14atoms_atomizationenergy_eV"
+    * "QM9full_atomizationenergy_eV"
+    * "QM9full_homolumo_eV" Note: Two properties (homo and lumo)
+    * "<your choice>"
+
+ ### Training:
+ 
+
+
+
+
 # Quantum deep field for molecule
 
 <div align='center'>
