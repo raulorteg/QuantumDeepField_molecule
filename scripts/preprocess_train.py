@@ -50,7 +50,7 @@ if __name__ == "__main__":
                    BASIS_SET, RADIUS, GRID_INTERVAL, orbital_dict)
     print('-'*50)
 
-    with open(str(dir_dataset) + 'orbitaldict_' + BASIS_SET + '.pickle', 'wb') as f:
+    with open(str(dir_dataset) + '/orbitaldict_' + BASIS_SET + '.pickle', 'wb') as f:
         pickle.dump(dict(orbital_dict), f)
 
     print('The preprocess has finished.')

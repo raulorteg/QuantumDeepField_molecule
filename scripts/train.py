@@ -26,7 +26,7 @@ from qdf.wrappers import Trainer, Tester
 
 if __name__ == "__main__":
 
-    # e.g python train.py --dataset= 
+    # e.g python train.py --dataset=QM9under7atoms_atomizationenergy_eV
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, required=True)
     parser.add_argument('--num_workers', type=int, default=1)
@@ -53,9 +53,9 @@ if __name__ == "__main__":
     dir_dataset = Path(DATASET_PATH, args.dataset)
     field = '_'.join([str(BASIS_SET), str(RADIUS) + 'sphere', str(GRID_INTERVAL) + 'grid/'])
 
-    dataset_train = QDFDataset(str(dir_dataset) + 'train_' + field)
-    dataset_val = QDFDataset(str(dir_dataset) + 'val_' + field)
-    dataset_test = QDFDataset(str(dir_dataset) + 'test_' + field)
+    dataset_train = QDFDataset(str(dir_dataset) + '/train_' + field)
+    dataset_val = QDFDataset(str(dir_dataset) + '/val_' + field)
+    dataset_test = QDFDataset(str(dir_dataset) + '/test_' + field)
 
     dataloader_train = torch.utils.data.DataLoader(
                  dataset_train, BATCH_SIZE, shuffle=True, num_workers=args.num_workers,
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     print('-'*50)
 
     # Load orbital_dict generated in preprocessing.
-    with open(str(dir_dataset) + 'orbitaldict_' + str(BASIS_SET) + '.pickle', 'rb') as f:
+    with open(str(dir_dataset) + '/orbitaldict_' + str(BASIS_SET) + '.pickle', 'rb') as f:
         orbital_dict = pickle.load(f)
     N_orbitals = len(orbital_dict)
 

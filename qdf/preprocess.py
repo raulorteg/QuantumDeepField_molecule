@@ -69,7 +69,7 @@ def create_dataset(dir_dataset, filename, basis_set,
 
     """Directory of a preprocessed dataset."""
     if property:
-        dir_preprocess = (dir_dataset + filename + '_' + basis_set + '_' +
+        dir_preprocess = (dir_dataset + "/" + filename + '_' + basis_set + '_' +
                           str(radius) + 'sphere_' +
                           str(grid_interval) + 'grid/')
     else:  # For demo.
