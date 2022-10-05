@@ -1,18 +1,10 @@
 #!/usr/bin/env python3
 
-import argparse
-import os
-from pathlib import Path
-import pickle
 import timeit
 
 import numpy as np
-
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
-import torch.utils.data
 
 
 class Trainer(object):

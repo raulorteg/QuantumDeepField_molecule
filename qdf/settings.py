@@ -1,5 +1,5 @@
 # Dataset.
-DATASET="QM9under7atoms_atomizationenergy_eV"
+# DATASET="QM9under7atoms_atomizationenergy_eV"
 # DATASET=QM9under14atoms_atomizationenergy_eV
 # DATASET=QM9full_atomizationenergy_eV
 # DATASET=QM9under7atoms_homolumo_eV  # Train homo and lumo simultaneously.

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
-import argparse
 from collections import defaultdict
-import os, glob, shutil
+import os
 import pickle
 from pathlib import Path
 
@@ -12,7 +11,7 @@ from scipy import spatial
 from qdf.definitions import ATOMICNUMBER_DICT
 
 
-def load_dict(filename):
+def load_dict(filename: str):
     with open(filename, 'rb') as f:
         dict_load = pickle.load(f)
         dict_default = defaultdict(lambda: max(dict_load.values())+1)
@@ -20,7 +19,7 @@ def load_dict(filename):
             dict_default[k] = v
     return dict_default
 
-def create_sphere(radius, grid_interval):
+def create_sphere(radius: float, grid_interval: float):
     """Create the sphere to be placed on each atom of a molecule."""
     xyz = np.arange(-radius, radius+1e-3, grid_interval)
     sphere = [[x, y, z] for x in xyz for y in xyz for z in xyz
