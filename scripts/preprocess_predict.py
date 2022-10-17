@@ -13,8 +13,8 @@ from qdf.settings import DATASET_PATH
 
 if __name__ == "__main__":
 
-    # e.g python preprocess_predict.py --dataset_train=QM9under14atoms_atomizationenergy_eV
-    #                                  --dataset_predict=QM9over15atoms_atomizationenergy_eV
+    # e.g python preprocess_predict.py --dataset_train=QM9under7atoms_homolumo_eV
+    #                                  --dataset_predict=QM9full_homolumo_eV
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_trained', type=str, required=True)
     parser.add_argument('--dataset_predict', type=str, required=True)

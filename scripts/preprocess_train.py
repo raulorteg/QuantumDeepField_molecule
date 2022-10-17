@@ -16,6 +16,7 @@ from qdf.preprocess import *
 if __name__ == "__main__":
 
     # argument parser, to parse the dataset to be used
+    # python preprocess_train.py --dataset=QM9under7atoms_homolumo_eV
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, required=True)
     args = parser.parse_args()

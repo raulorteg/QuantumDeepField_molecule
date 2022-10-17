@@ -39,7 +39,7 @@ SAVE_PATH = "/home/raul/git/QuantumDeepField_molecule/output"
 ```shell
  python preprocess_train.py --dataset=$dataset_trained
  ```
- _e.g `python preprocess_train.py --dataset=QM9under7atoms_atomizationenergy_eV`_
+ _e.g `python preprocess_train.py --dataset=QM9under7atoms_homolumo_eV`_
 
  _Options:_
  * `dataset`: [string] dataset to be used in pre-training. From those that can be installed directly from the cloned repository the options are:
@@ -53,7 +53,7 @@ SAVE_PATH = "/home/raul/git/QuantumDeepField_molecule/output"
 ```shell
  python train.py --dataset=$dataset_trained --num_workers=$num_workers --seed=$seed --device=$device
  ```
- _e.g `python train.py --dataset=QM9under7atoms_atomizationenergy_eV`_
+ _e.g `python train.py --dataset=QM9under7atoms_homolumo_eV`_
 
  _Options:_
  * `dataset` [required]: [string] dataset to be used in pre-training. From those that can be installed directly from the cloned repository the options are:
@@ -70,7 +70,7 @@ SAVE_PATH = "/home/raul/git/QuantumDeepField_molecule/output"
 ```shell
  python preprocess_predict.py --dataset_train=$dataset_trained --dataset_predict=$dataset_predict
  ```
- _e.g `python preprocess_predict.py --dataset_train=QM9under14atoms_atomizationenergy_eV                        --dataset_predict=QM9over15atoms_atomizationenergy_eV`
+ _e.g `python preprocess_predict.py --dataset_train=QM9under7atoms_homolumo_eV                        --dataset_predict=QM9full_homolumo_eV`
  _Options:_
  * `dataset_train` [required]: [string] dataset that was used in pre-training. It is use to look for and load the appropriate orbital dictionaries so that the preprocessing done in the prediction dataset is coherent to what was done in pre-processing the original dataset trained on.
  * `dataset_predict` [required]: [string] dataset to be used in prediction.
@@ -80,7 +80,7 @@ SAVE_PATH = "/home/raul/git/QuantumDeepField_molecule/output"
 ```shell
  python predict.py --dataset_train=$dataset_trained --dataset_predict=$dataset_predict --model_path=$model_path --num_workers=$num_workers --seed=$seed --device=$device
  ```
- _e.g `python predict.py --dataset_train=QM9under14atoms_atomizationenergy_eV                        --dataset_predict=QM9over15atoms_atomizationenergy_eV --model_path="../pretrained/model"`
+ _e.g `python predict.py --dataset_train=QM9under7atoms_homolumo_eV                        --dataset_predict=QM9full_homolumo_eV --model_path="../pretrained/model"`
 
  _Options:_
  * `dataset_train` [required]: [string] dataset that was used in pre-training. It is use to look for and load the appropriate orbital dictionaries so that the preprocessing done in the prediction dataset is coherent to what was done in pre-processing the original dataset trained on.

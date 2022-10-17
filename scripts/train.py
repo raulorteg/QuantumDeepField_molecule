@@ -26,7 +26,7 @@ from qdf.wrappers import Trainer, Tester
 
 if __name__ == "__main__":
 
-    # e.g python train.py --dataset=QM9under7atoms_atomizationenergy_eV
+    # e.g python train.py --dataset=QM9under7atoms_homolumo_eV
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str, required=True)
     parser.add_argument('--num_workers', type=int, default=1)
