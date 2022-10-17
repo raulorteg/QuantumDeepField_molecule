@@ -3,12 +3,25 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import numpy as np
 
 
 class QuantumDeepField(nn.Module):
-    def __init__(self, device, N_orbitals,
-                 dim, layer_functional, operation, N_output,
-                 hidden_HK, layer_HK,):
+    """
+    QDF model
+    
+    :param torch.device device: torch device to be used for training, cuda or cpu.
+    :param int N_orbitals: Number of orbitals to be used.
+    :param int dim: Dimension.
+    :param int layer_functional: Number of linear layers in the NN predicting energies.
+    :param str operation: "sum" or "mean" operation perform on the loss of the energy prediction.
+    :param int N_output: Number of values to predict (one for atomization energies, 2 for homo-lumo).
+    :param int hidden_HK Dimension of the hidden layer(s) in the NN predicting potentials (HK-map):
+    :param int layer_HK: Number of linear layers in the NN predicting potentials (HK-map).
+    """
+    def __init__(self, device: torch.device, N_orbitals:int,
+                 dim:int, layer_functional:int, operation:str, N_output:int,
+                 hidden_HK:int, layer_HK:int,):
         super(QuantumDeepField, self).__init__()
 
         """All learning parameters of the QDF model."""
@@ -29,7 +42,7 @@ class QuantumDeepField(nn.Module):
         self.operation = operation
         self.layer_HK = layer_HK
 
-    def list_to_batch(self, xs, dtype=torch.FloatTensor, cat=None, axis=None):
+    def list_to_batch(self, xs:np.array, dtype=torch.FloatTensor, cat:bool=None, axis:int=None):
         """Transform the list of numpy data into the batch of tensor data."""
         xs = [dtype(x).to(self.device) for x in xs]
         if cat:
@@ -75,17 +88,17 @@ class QuantumDeepField(nn.Module):
     def LCAO(self, inputs):
         """Linear combination of atomic orbitals (LCAO)."""
 
-        """Inputs."""
+        # unpack the inputs
         (atomic_orbitals, distance_matrices,
          quantum_numbers, N_electrons, N_fields) = inputs
 
-        """Cat or pad each input data for batch processing."""
+        # Cat or pad each input data for batch processing
         atomic_orbitals = self.list_to_batch(atomic_orbitals, torch.LongTensor)
         distance_matrices = self.pad(distance_matrices, 1e6)
         quantum_numbers = self.list_to_batch(quantum_numbers, cat=True, axis=1)
         N_electrons = self.list_to_batch(N_electrons)
 
-        """Normalize the coefficients in LCAO."""
+        # Normalize the coefficients in LCAO
         coefficients = []
         for AOs in atomic_orbitals:
             coefs = F.normalize(self.coefficient(AOs), 2, 0)
@@ -94,7 +107,7 @@ class QuantumDeepField(nn.Module):
         coefficients = torch.cat(coefficients)
         atomic_orbitals = torch.cat(atomic_orbitals)
 
-        """LCAO."""
+        # LCAO
         basis_matrix = self.basis_matrix(atomic_orbitals,
                                          distance_matrices, quantum_numbers)
         molecular_orbitals = torch.matmul(basis_matrix, coefficients)
@@ -112,8 +125,13 @@ class QuantumDeepField(nn.Module):
 
         return torch.cat(normalized_MOs)
 
-    def functional(self, vectors, layers, operation, axis):
-        """DNN-based energy functional."""
+    def functional(self, vectors:torch.tensor, layers:int, operation:str, axis:int):
+        """DNN-based energy functional.
+        :param torch.tensor vectors: .
+        :param int layers: Number of linear layers to be used in the Neural Network predicting energy
+        :param str operation: "sum" or "mean" operation perform on the loss of the energy prediction.
+        :param int axis: Index of the axis along which the split of the vectors is done.
+        """
         for l in range(layers):
             vectors = torch.relu(self.W_functional[l](vectors))
         if operation == 'sum':
@@ -122,16 +140,25 @@ class QuantumDeepField(nn.Module):
             vectors = [torch.mean(vs, 0) for vs in torch.split(vectors, axis)]
         return torch.stack(vectors)
 
-    def HKmap(self, scalars, layers):
-        """DNN-based Hohenberg--Kohn map."""
+    def HKmap(self, scalars: torch.tensor, layers:int):
+        """DNN-based Hohenberg--Kohn map.
+        :param torch.tensor scalars: .
+        :param int layers: Number of linear layers to be used in the Neural Network predicting potentials.
+        """
         vectors = self.W_density(scalars)
         for l in range(layers):
             vectors = torch.relu(self.W_HK[l](vectors))
         return self.W_potential(vectors)
 
-    def forward(self, data, train=False, target=None, predict=False):
+    def forward(self, data, train:bool=False, target:str=None, predict:bool=False):
         """Forward computation of the QDF model
         using the above defined functions.
+
+        :param data:
+        :param bool train: Boolean flag raised if on training mode
+        :param str target: String "V" or "E" depending on if the target property in the forward pass is
+        to predict potentials or energies.
+        :param bool predict: Boolean flag raised if on testing/predicting mode, untracks gradients.
         """
 
         idx, inputs, N_fields = data[0], data[1:6], data[5]
