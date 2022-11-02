@@ -3,7 +3,7 @@ name: Black Check
 # Run action on PRs to master
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   suggest:
