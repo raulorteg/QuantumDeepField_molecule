@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from collections import defaultdict
 import os
 import pickle
+from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -12,24 +12,30 @@ from qdf.definitions import ATOMICNUMBER_DICT
 
 
 def load_dict(filename: str):
-    with open(filename, 'rb') as f:
+    with open(filename, "rb") as f:
         dict_load = pickle.load(f)
-        dict_default = defaultdict(lambda: max(dict_load.values())+1)
+        dict_default = defaultdict(lambda: max(dict_load.values()) + 1)
         for k, v in dict_load.items():
             dict_default[k] = v
     return dict_default
 
+
 def create_sphere(radius: float, grid_interval: float):
     """Create the sphere to be placed on each atom of a molecule."""
-    xyz = np.arange(-radius, radius+1e-3, grid_interval)
-    sphere = [[x, y, z] for x in xyz for y in xyz for z in xyz
-              if (x**2 + y**2 + z**2 <= radius**2) and [x, y, z] != [0, 0, 0]]
+    xyz = np.arange(-radius, radius + 1e-3, grid_interval)
+    sphere = [
+        [x, y, z]
+        for x in xyz
+        for y in xyz
+        for z in xyz
+        if (x**2 + y**2 + z**2 <= radius**2) and [x, y, z] != [0, 0, 0]
+    ]
     return np.array(sphere)
 
 
 def create_field(sphere, coords):
     """Create the grid field of a molecule."""
-    field = [f for coord in coords for f in sphere+coord]
+    field = [f for coord in coords for f in sphere + coord]
     return np.array(field)
 
 
@@ -59,44 +65,54 @@ def create_potential(distance_matrix, atomic_numbers):
     """Create the Gaussian external potential used in Brockherde et al., 2017,
     Bypassing the Kohn-Sham equations with machine learning.
     """
-    Gaussians = np.exp(-distance_matrix**2)
+    Gaussians = np.exp(-(distance_matrix**2))
     return -np.matmul(Gaussians, atomic_numbers)
 
 
-def create_dataset(dir_dataset, filename, basis_set,
-                   radius, grid_interval, orbital_dict, property=True):
+def create_dataset(
+    dir_dataset, filename, basis_set, radius, grid_interval, orbital_dict, property=True
+):
 
     """Directory of a preprocessed dataset."""
     if property:
-        dir_preprocess = (dir_dataset + "/" + filename + '_' + basis_set + '_' +
-                          str(radius) + 'sphere_' +
-                          str(grid_interval) + 'grid/')
+        dir_preprocess = (
+            dir_dataset
+            + "/"
+            + filename
+            + "_"
+            + basis_set
+            + "_"
+            + str(radius)
+            + "sphere_"
+            + str(grid_interval)
+            + "grid/"
+        )
     else:  # For demo.
-        dir_preprocess = filename + '/'
+        dir_preprocess = filename + "/"
     os.makedirs(dir_preprocess, exist_ok=True)
 
     """Basis set."""
-    inner_outer = [int(b) for b in basis_set[:-1].replace('-', '')]
+    inner_outer = [int(b) for b in basis_set[:-1].replace("-", "")]
     inner, outer = inner_outer[0], sum(inner_outer[1:])
 
     """A sphere for creating the grid field of a molecule."""
     sphere = create_sphere(radius, grid_interval)
 
     """Load a dataset."""
-    with open(Path(dir_dataset, filename+".txt"), 'r') as f:
-        dataset = f.read().strip().split('\n\n')
+    with open(Path(dir_dataset, filename + ".txt"), "r") as f:
+        dataset = f.read().strip().split("\n\n")
 
     N = len(dataset)
     percent = 10
 
     for n, data in enumerate(dataset):
 
-        if 100*n/N >= percent:
-            print(str(percent) + '％ has finished.')
+        if 100 * n / N >= percent:
+            print(str(percent) + "％ has finished.")
             percent += 40
 
         """Index of the molecular data."""
-        data = data.strip().split('\n')
+        data = data.strip().split("\n")
         idx = data[0]
 
         """Multiple properties (e.g., homo and lumo) can also be processed
@@ -131,11 +147,13 @@ def create_dataset(dir_dataset, filename, basis_set,
             and principle quantum numbers (q=1,2,...).
             """
             if atomic_number <= 2:
-                aqs = [(atom+'1s' + str(i), 1) for i in range(outer)]
+                aqs = [(atom + "1s" + str(i), 1) for i in range(outer)]
             elif atomic_number >= 3:
-                aqs = ([(atom+'1s' + str(i), 1) for i in range(inner)] +
-                       [(atom+'2s' + str(i), 2) for i in range(outer)] +
-                       [(atom+'2p' + str(i), 2) for i in range(outer)])
+                aqs = (
+                    [(atom + "1s" + str(i), 1) for i in range(inner)]
+                    + [(atom + "2s" + str(i), 2) for i in range(outer)]
+                    + [(atom + "2p" + str(i), 2) for i in range(outer)]
+                )
             for a, q in aqs:
                 atomic_orbitals.append(a)
                 orbital_coords.append(xyz)
@@ -154,16 +172,17 @@ def create_dataset(dir_dataset, filename, basis_set,
         N_field = len(field_coords)  # The number of points in the grid field.
 
         """Save the above set of data."""
-        data = [idx,
-                atomic_orbitals.astype(np.int64),
-                distance_matrix.astype(np.float32),
-                quantum_numbers.astype(np.float32),
-                N_electrons.astype(np.float32),
-                N_field]
+        data = [
+            idx,
+            atomic_orbitals.astype(np.int64),
+            distance_matrix.astype(np.float32),
+            quantum_numbers.astype(np.float32),
+            N_electrons.astype(np.float32),
+            N_field,
+        ]
 
         if property:
-            data += [property_values.astype(np.float32),
-                     potential.astype(np.float32)]
+            data += [property_values.astype(np.float32), potential.astype(np.float32)]
 
         data = np.array(data, dtype=object)
         np.save(dir_preprocess + idx, data)
