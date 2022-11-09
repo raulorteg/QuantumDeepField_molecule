@@ -44,8 +44,6 @@ jobs:
         
       - name: Force push to destination branch
         uses: ad-m/github-push-action@master
-        permissions:
-          contents: write
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
