@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; QuantumDeepField . documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> QuantumDeepField
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#preprocessing-for-training">1. Preprocessing (for training):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#options">Options:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#training">2. Training:</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Options:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#preprocessing-inference-predict">3. Preprocessing inference (predict):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Options:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prediction-inference">4. Prediction (Inference):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Options:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QuantumDeepField</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/usage/usage.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<hr class="docutils" />
+<p>In <code class="docutils literal notranslate"><span class="pre">/scripts</span></code> you may find some scripts prepared to run the default values with the only input being the dataset to be used, through the argument –dataset.</p>
+<p><em>NOTE:</em> Configure the paths to the datasets by editting the file in qdf/settings.py:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DATASET_PATH</span> <span class="o">=</span> <span class="s2">&quot;.../QuantumDeepField_molecule/dataset&quot;</span>
+<span class="n">SAVE_PATH</span> <span class="o">=</span> <span class="s2">&quot;.../QuantumDeepField_molecule/output&quot;</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<section id="preprocessing-for-training">
+<h2>1. Preprocessing (for training):<a class="headerlink" href="#preprocessing-for-training" title="Permalink to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python preprocess_train.py --dataset<span class="o">=</span><span class="nv">$dataset_trained</span>
+</pre></div>
+</div>
+<p>e.g _python preprocess_train.py –dataset=QM9under7atoms_homolumo<em>eV</em></p>
+<section id="options">
+<h3>Options:<a class="headerlink" href="#options" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset</span></code> [required]: [string] dataset to be used in pre-training. From those that can be installed directly from the cloned repository the options are:</p>
+<ul>
+<li><p>“QM9under14atoms_atomizationenergy_eV”</p></li>
+<li><p>“QM9full_atomizationenergy_eV”</p></li>
+<li><p>“QM9full_homolumo_eV” Note: Two properties (homo and lumo)</p></li>
+<li><p>“<span class="raw-html-m2r"><your choice></span>“</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="training">
+<h2>2. Training:<a class="headerlink" href="#training" title="Permalink to this heading"></a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python train.py --dataset<span class="o">=</span><span class="nv">$dataset_trained</span> --num_workers<span class="o">=</span><span class="nv">$num_workers</span> --seed<span class="o">=</span><span class="nv">$seed</span> --device<span class="o">=</span><span class="nv">$device</span>
+</pre></div>
+</div>
+<p>e.g _python train.py –dataset=QM9under7atoms_homolumo<em>eV</em></p>
+<section id="id1">
+<h3>Options:<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset</span></code> [required]: [string] dataset to be used in pre-training. From those that can be installed directly from the cloned repository the options are:</p>
+<ul>
+<li><p>“QM9under14atoms_atomizationenergy_eV”</p></li>
+<li><p>“QM9full_atomizationenergy_eV”</p></li>
+<li><p>“QM9full_homolumo_eV” Note: Two properties (homo and lumo)</p></li>
+<li><p>“<span class="raw-html-m2r"><your choice></span>“</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_workers</span></code>: [int] number of workers to use for the dataloader. Defaults to 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seed</span></code>: [int] integer used to specify the seed for the model initialization. Defaults to 1729.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: [string] device to use for training and inference in the model, options are [“cuda”, “cpu”], if None is specified it will use “cuda” if available in your system, else will use “cpu” (slower).</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="preprocessing-inference-predict">
+<h2>3. Preprocessing inference (predict):<a class="headerlink" href="#preprocessing-inference-predict" title="Permalink to this heading"></a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python preprocess_predict.py --dataset_train<span class="o">=</span><span class="nv">$dataset_trained</span> --dataset_predict<span class="o">=</span><span class="nv">$dataset_predict</span>
+</pre></div>
+</div>
+<p>e.g python preprocess_predict.py –dataset_train=QM9under7atoms_homolumo_eV –dataset_predict=QM9full_homolumo_eV</p>
+<section id="id2">
+<h3>Options:<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset_train</span></code> [required]: [string] dataset that was used in pre-training. It is use to look for and load the appropriate orbital dictionaries so that the preprocessing done in the prediction dataset is coherent to what was done in pre-processing the original dataset trained on.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset_predict</span></code> [required]: [string] dataset to be used in prediction.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="prediction-inference">
+<h2>4. Prediction (Inference):<a class="headerlink" href="#prediction-inference" title="Permalink to this heading"></a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python predict.py --dataset_train<span class="o">=</span><span class="nv">$dataset_trained</span> --dataset_predict<span class="o">=</span><span class="nv">$dataset_predict</span> --model_path<span class="o">=</span><span class="nv">$model_path</span> --num_workers<span class="o">=</span><span class="nv">$num_workers</span> --seed<span class="o">=</span><span class="nv">$seed</span> --device<span class="o">=</span><span class="nv">$device</span>
+</pre></div>
+</div>
+<p>e.g python predict.py –dataset_train=QM9under7atoms_homolumo_eV –dataset_predict=QM9full_homolumo_eV –model_path=”../pretrained/model”</p>
+<section id="id3">
+<h3>Options:<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset_train</span></code> [required]: [string] dataset that was used in pre-training. It is use to look for and load the appropriate orbital dictionaries so that the preprocessing done in the prediction dataset is coherent to what was done in pre-processing the original dataset trained on.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset_predict</span></code> [required]: [string] dataset to be used in prediction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_path</span></code> [required]: [string] path to file where the pre-trained model is saved.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_workers</span></code>: [int] number of workers to use for the dataloader. Defaults to 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seed</span></code>: [int] integer used to specify the seed for the model initialization. Defaults to 1729.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>: [string] device to use for training and inference in the model, options are [“cuda”, “cpu”], if None is specified it will use “cuda” if available in your system, else will use “cpu” (slower).</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, ..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
